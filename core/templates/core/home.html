@@ -1,5 +1,65 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Hello! The Homepage URL is working perfectly.</h1>
+    <!-- Hero Section -->
+    <div class="p-5 mb-5 bg-white rounded-3 shadow-sm text-center">
+        <h1 class="display-5 fw-bold text-primary">Find The Right Doctor For You</h1>
+        <p class="lead text-muted">Book your appointment online in seconds. No waiting in lines.</p>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form class="d-flex">
+                    <input class="form-control form-control-lg me-2" type="search" placeholder="Search by doctor name or department...">
+                    <button class="btn btn-primary btn-lg px-4" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Doctor Cards Grid -->
+    <h3 class="mb-4 fw-bold text-dark">Available Doctors</h3>
+    <div class="row g-4">
+        <!-- Card1 -->
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 text-center p-3">
+                <div class="mx-auto bg-secondary rounded-circle d-flex align-items-center justify-content-center text-white" style="width: 100px; height: 100px; margin-top: 15px;">
+                    <i class="bi bi-person-fill" style="font-size: 3rem;"></i>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">Dr. John Smith</h5>
+                    <span class="badge bg-info text-dark mb-3">Cardiology</span>
+                    <p class="card-text text-muted small">Specialist in heart diseases and cardiovascular health.</p>
+                    <a href="#" class="btn btn-outline-primary w-100 rounded-pill">Book Appointment</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card2 -->
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm text-center p-3">
+                <div class="mx-auto bg-secondary rounded-circle d-flex align-items-center justify-content-center text-white" style="width: 100px; height: 100px; margin-top: 15px;">
+                    <i class="bi bi-person-fill" style="font-size: 3rem;"></i>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title fw-bold mb-1">Dr. Sarah Lee</h5>
+                    <span class="badge bg-warning text-dark mb-3">Pediatrics</span>
+                    <p class="card-text text-muted small">Dedicated to the health and medical care of infants and children.</p>
+                    <a href="#" class="btn btn-outline-primary w-100 rounded-pill">Book Appointment</a>
+                </div>
+            </div>
+        </div>
+        <!-- Card3 -->
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm text-center p-3">
+                <div class="mx-auto bg-secondary rounded-circle d-flex align-items-center justify-content-center text-white" style="width: 100px; height: 100px; margin-top: 15px;">
+                    <i class="bi bi-person-fill" style="font-size: 3rem;"></i>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title fw-bold mb-1">Dr. Michael Brown</h5>
+                    <span class="badge bg-success text-dark mb-3">Neurology</span>
+                    <p class="card-text text-muted small">Specialist in diagnosing and treating disorders of the nervous system.</p>
+                    <a href="#" class="btn btn-outline-primary w-100 rounded-pill">Book Appointment</a>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
