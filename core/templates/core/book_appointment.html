@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class=row justify-content-center mt-5>
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white text-center py-3">
+                <h4 class="mb-0 fw-bold">Book Appointment</h4>
+            </div>
+            <div class="card-body">
+                <!-- Show Doctor Info -->
+                <div class="text-center mb-4">
+                    <h5 class="fw-bold">Dr. {{ doctor.user.first_name }} {{ doctor.user.last_name }}</h5>
+                    <span class="badge bg-info text-dark">{{ doctor.department.name }}</span>
+                </div>
+                
+                <!-- The Form -->
+
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Select Date</label>
+                        <input type="date" name="date" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Select Time Slot</label>
+                        <select name="time_slot" class="form-select" required>
+                            <option value="" disabled selected>Choose a time...</option>
+                            <option value="09:00 - 09:30">09:00 - 09:30</option>
+                            <option value="09:30 - 10:00">09:30 - 10:00</option>
+                            <option value="10:00 - 10:30">10:00 - 10:30</option>
+                            <option value="10:30 - 11:00">10:30 - 11:00</option>
+                            <option value="14:00 - 14:30">14:00 - 14:30</option>
+                            <option value="14:30 - 15:00">14:30 - 15:00</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 rounded-pill mt-3 py-2 fw-bold">Confirm Booking</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

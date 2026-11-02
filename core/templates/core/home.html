@@ -45,7 +45,7 @@
                     <!-- Specialty -->
                     <p class="card-text text-muted small">{{ doctor.specialty }}</p>
                     
-                    <a href="#" class="btn btn-outline-primary w-100 rounded-pill">Book Appointment</a>
+                    <a href="{% url 'book_appointment' doctor.id %}" class="btn btn-outline-primary w-100 rounded-pill">Book Appointment</a>
                 </div>
                 
             </div>
