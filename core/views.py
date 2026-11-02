@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.db import IntegrityError
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import PatientRegistrationForm
+from .forms import PatientRegistrationForm, LoginForm
 
 # Create your views here.
 
@@ -18,12 +18,25 @@ def home(request):
 def book_appointment(request, doctor_id):
     doctor = get_object_or_404(Doctor, id=doctor_id)
     
+    # Check if the user is logged in
+    if not request.user.is_authenticated:
+        messages.error(request, "You must be logged in to book an appointment.")
+        return redirect('login')
+    
+    # Get the Patient profile of the logged-in user
+    # (We use filter().first() to avoid crashing if the user is a Doctor/Admin without a Patient profile)
+    patient = Patient.objects.filter(user=request.user).first()
+    
+    if not patient:
+        messages.error(request, "You do not have a Patient profile. Please contact support.")
+        return redirect('home')
+    
+    
     if request.method == 'POST':
         date_str = request.POST.get('date')
         time_slot = request.POST.get('time_slot')
         
         if date_str and time_slot:
-            patient = Patient.objects.first()
             
             # Try Block to handle IntegrityError for duplicate appointments
             try:
@@ -59,7 +72,7 @@ def register_view(request):
 
 def login_view(request):
     if request.method == "POST":
-        form = AuthenticationForm(request, data=request.POST)
+        form = LoginForm(request, data=request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
@@ -69,7 +82,7 @@ def login_view(request):
                 messages.success(request, f"Welcome Back, {username}")
                 return redirect('home')
     else:
-        form = AuthenticationForm()
+        form = LoginForm()
     return render(request, 'core/login.html', {'form': form})
 
 
