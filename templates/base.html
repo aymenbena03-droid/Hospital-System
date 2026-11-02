@@ -32,6 +32,16 @@
 
     <!-- MAIN CONTENT BLOCK -->
     <div class="container mt-4">
+        <!-- ADD THIS BLOCK FOR MESSAGES -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <!-- END MESSAGE BLOCK -->
         {% block content %}
 
         {% endblock %}
