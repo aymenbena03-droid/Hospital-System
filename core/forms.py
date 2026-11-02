@@ -1,7 +1,6 @@
 from django import forms 
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import AuthenticationForm
 from .models import Patient
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
