@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Doctor, Appointment, Patient
 from django.contrib import messages
-from datetime import datetime
+from django.db import IntegrityError
 
 # Create your views here.
 
@@ -22,15 +22,20 @@ def book_appointment(request, doctor_id):
         if date_str and time_slot:
             patient = Patient.objects.first()
             
-            # Create an appointment
-            Appointment.objects.create(
-                patient=patient,
-                doctor=doctor,
-                date=date_str,
-                time_slot=time_slot,
-                status='Pending'
-            )
-            messages.success(request, 'Appointement booked successfully!')
-            return redirect('home')
+            # Try Block to handle IntegrityError for duplicate appointments
+            try:
+                Appointment.objects.create(
+                    patient=patient,
+                    doctor=doctor,
+                    date=date_str,
+                    time_slot=time_slot,
+                    status='Pending'
+                )
+                messages.success(request, 'Appointment booked successfully!')
+                return redirect('home')
+            # Catch the IntegrityError and display an error message
+            except IntegrityError:
+                messages.error(request, 'An appointment for this time slot already exists.')
+                return redirect('book_appointment', doctor_id=doctor.id)
     
     return render(request, 'core/book_appointment.html', {'doctor': doctor})

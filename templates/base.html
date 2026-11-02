@@ -35,7 +35,8 @@
         <!-- ADD THIS BLOCK FOR MESSAGES -->
         {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                <!-- CHECK IF MESSAGE IS AN ERROR TO MAKE IT RED -->
+                <div class="alert {% if message.tags == 'error' %} alert-danger {% else %} alert-success {% endif %} alert-dismissible fade show shadow-sm" role="alert">
                     {{ message }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
