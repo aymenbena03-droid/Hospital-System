@@ -5,6 +5,7 @@ from django.db import IntegrityError
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import PatientRegistrationForm, LoginForm
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -91,3 +92,24 @@ def logout_view(request):
     messages.success(request, "You have been logged out.")
     return redirect('home')
             
+            
+@login_required
+def doctor_dashboard(request):
+    # Check if the logged-in user is actually a Doctor
+    doctor = Doctor.objects.filter(user=request.user).first()
+    
+    
+    if not doctor:
+        messages.error(request, "You do not have permission to view the doctor dashboard.")
+        return redirect('home')
+    
+    # Get all appointments for this specific doctor, ordered by date
+    appointments = Appointment.objects.filter(doctor=doctor).order_by('date', 'time_slot')
+    
+    # ADD THIS LINE:
+    print(f"DEBUG: Logged in User: {request.user.username} | Found Doctor: {doctor.user.username} | Appointments found: {appointments.count()}")
+    
+    return render(request, 'core/doctor_dashboard.html', {
+        'doctor': doctor,
+        'appointment': appointments
+    })
