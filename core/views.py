@@ -106,11 +106,22 @@ def doctor_dashboard(request):
     # Get all appointments for this specific doctor, ordered by date
     appointments = Appointment.objects.filter(doctor=doctor).order_by('date', 'time_slot')
     
-    # ADD THIS LINE:
-    print(f"DEBUG: Logged in User: {request.user.username} | Found Doctor: {doctor.user.username} | Appointments found: {appointments.count()}")
-    
+        
     return render(request, 'core/doctor_dashboard.html', {
         'doctor': doctor,
         'appointments': appointments,
-        'test_variable': 'HELLO WORLD'
     })
+    
+    
+
+@login_required
+def complete_appointment(request, appointment_id):
+    appointment = get_object_or_404(Appointment, id=appointment_id)
+    
+    # Security check: ensure the logged-in doctor owns this appointment
+    if appointment.doctor.user == request.user:
+        appointment.status = 'Completed'
+        appointment.save()
+        messages.success(request, "Appointment marked as completed.")
+    
+    return redirect('doctor_dashboard')

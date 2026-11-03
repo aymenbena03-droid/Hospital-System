@@ -27,6 +27,7 @@
                     <th>Date</th>
                     <th>Time Slot</th>
                     <th>Status</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -42,6 +43,11 @@
                             <span class="badge bg-success">Completed</span>
                         {% else %}
                             <span class="badge bg-danger">Cancelled</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if appt.status == 'Pending' %}
+                            <a href="{% url 'complete_appointment' appt.id %}" class="btn btn-sm btn-success">Mark Completed</a>
                         {% endif %}
                     </td>
                 </tr>
