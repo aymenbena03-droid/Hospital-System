@@ -111,5 +111,6 @@ def doctor_dashboard(request):
     
     return render(request, 'core/doctor_dashboard.html', {
         'doctor': doctor,
-        'appointment': appointments
+        'appointments': appointments,
+        'test_variable': 'HELLO WORLD'
     })

@@ -26,7 +26,6 @@
                     <th>Patient Name</th>
                     <th>Date</th>
                     <th>Time Slot</th>
-                    <th>Reason</th>
                     <th>Status</th>
                 </tr>
             </thead>
@@ -36,7 +35,6 @@
                     <td class="fw-bold">{{ appt.patient.user.first_name }} {{ appt.patient.user.last_name }}</td>
                     <td>{{ appt.date }}</td>
                     <td>{{ appt.time_slot }}</td>
-                    <td>{{ appt.reason|default:"General Checkup" }}</td>
                     <td>
                         {% if appt.status == 'Pending' %}
                             <span class="badge bg-warning text-dark">Pending</span>
