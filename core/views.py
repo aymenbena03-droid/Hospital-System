@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.db import IntegrityError, models
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import PatientRegistrationForm, LoginForm
+from .forms import PatientRegistrationForm, LoginForm, DoctorProfileForm
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -156,3 +156,25 @@ def patient_dashboard(request):
         'patient': patient,
         'appointments': appointments
     })
+    
+
+
+@login_required
+def doctor_profile(request):
+    doctor = Doctor.objects.filter(user=request.user).first()
+    
+    if not doctor:
+        messages.error(request, "You do not have permission to view this page.")
+        return redirect('home')
+        
+    if request.method == 'POST':
+        # request.FILES is required for image uploads!
+        form = DoctorProfileForm(request.POST, request.FILES, instance=doctor)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Profile updated successfully!")
+            return redirect('doctor_dashboard')
+    else:
+        form = DoctorProfileForm(instance=doctor)
+        
+    return render(request, 'core/doctor_profile.html', {'form': form, 'doctor': doctor})

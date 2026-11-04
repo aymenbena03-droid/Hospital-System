@@ -1,7 +1,7 @@
 from django import forms 
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from .models import Patient
+from .models import Patient, Doctor
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
@@ -41,3 +41,21 @@ class LoginForm(AuthenticationForm):
             self.helper = FormHelper()
             self.helper.form_method = 'post'
             self.helper.add_input(Submit('submit', 'Login', css_class='btn-primary w-100 rounded-pill mt-3'))
+            
+
+class DoctorProfileForm(forms.ModelForm):
+    class Meta:
+        model = Doctor
+        fields = ['avatar', 'phone', 'specialty', 'bio']
+        widgets = {
+            'bio': forms.Textarea(attrs={'rows': 4}),
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        # We need enctype for file uploads!
+        self.helper.form_tag = False
+        
+        
