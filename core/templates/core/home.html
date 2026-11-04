@@ -7,8 +7,8 @@
         <p class="lead text-muted">Book your appointment online in seconds. No waiting in lines.</p>
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <form class="d-flex">
-                    <input class="form-control form-control-lg me-2" type="search" placeholder="Search by doctor name or department...">
+                <form class="d-flex" method="GEt" action="{% url 'home' %}">
+                    <input class="form-control form-control-lg me-2" type="search" name="q" value="{{ query }}" placeholder="Search by doctor name or department...">
                     <button class="btn btn-primary btn-lg px-4" type="submit">Search</button>
                 </form>
             </div>
@@ -53,8 +53,8 @@
         {% empty %}
             <!-- What to show if there are no doctors in the database -->
             <div class="col-12 text-center text-muted mt-5">
-                <h4>No doctors available at the moment.</h4>
-                <p>Please check back later.</p>
+                <h4>No doctors found for "{{ query }}".</h4>
+                <p>Try searching for a different name or department.</p>
             </div>
         {% endfor %}
         <!-- The Django Loop Ends Here -->

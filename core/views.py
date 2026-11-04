@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Doctor, Appointment, Patient
 from django.contrib import messages
-from django.db import IntegrityError
+from django.db import IntegrityError, models
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import PatientRegistrationForm, LoginForm
@@ -10,9 +10,21 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def home(request):
-    doctors = Doctor.objects.all()
+    # 1. Get the search query from the URL (e.g., /?q=smith)
+    query = request.GET.get('q', '')
     
-    return render(request, 'core/home.html', {'doctors': doctors})
+    if query:
+        # 2. Filter doctors by name or department (icontains means case-insensitive)
+        doctors = Doctor.objects.filter(
+            models.Q(user__first_name__icontains=query) |
+            models.Q(user__last_name__icontains=query)  |
+            models.Q(department__name__icontains=query)
+        ).distinct()
+    else:
+        # 3. If no query, show all doctors
+        doctors = Doctor.objects.all()
+        
+    return render(request, 'core/home.html', {'doctors': doctors, 'query': query})
 
 
 # Booking an appointment
