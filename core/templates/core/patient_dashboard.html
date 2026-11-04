@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-primary">My Appointments</h2>
+    <h5 class="text-muted">Welcome, {{ patient.user.first_name }} {{ patient.user.last_name }}</h5>
+</div>
+
+<div class="card shadow border-0">
+    <div class="card-body">
+        {% if appointments %}
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Doctor</th>
+                    <th>Department</th>
+                    <th>Date</th>
+                    <th>Time Slot</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for appt in appointments %}
+                <tr>
+                    <td class="fw-bold">Dr. {{ appt.doctor.user.first_name }} {{ appt.doctor.user.last_name }}</td>
+                    <td>{{ appt.doctor.department.name }}</td>
+                    <td>{{ appt.date }}</td>
+                    <td>{{ appt.time_slot }}</td>
+                    <td>
+                        {% if appt.status == 'Pending' %}
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        {% elif appt.status == 'Completed' %}
+                            <span class="badge bg-success">Completed</span>
+                        {% else %}
+                            <span class="badge bg-danger">Cancelled</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <div class="text-center text-muted py-5">
+                <h5>You have no appointments booked.</h5>
+                <p>Go to the homepage to find a doctor and book one!</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

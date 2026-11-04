@@ -125,3 +125,22 @@ def complete_appointment(request, appointment_id):
         messages.success(request, "Appointment marked as completed.")
     
     return redirect('doctor_dashboard')
+
+
+
+@login_required
+def patient_dashboard(request):
+    # 1. Get the logged-in patient's profile
+    patient = Patient.objects.filter(user=request.user).first()
+    
+    if not patient:
+        messages.error(request, "You do not have a Patient profile.")
+        return redirect('home')
+        
+    # 2. Get their appointments (ordered by newest first)
+    appointments = Appointment.objects.filter(patient=patient).order_by('-date', '-time_slot')
+    
+    return render(request, 'core/patient_dashboard.html', {
+        'patient': patient,
+        'appointments': appointments
+    })
