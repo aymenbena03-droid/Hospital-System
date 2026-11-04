@@ -55,6 +55,7 @@
             <div class="col-12 text-center text-muted mt-5">
                 <h4>No doctors found for "{{ query }}".</h4>
                 <p>Try searching for a different name or department.</p>
+                <a href="{% url 'home' %}" class="btn btn-outline-primary mt-2 rounded-pill">Clear Search</a>
             </div>
         {% endfor %}
         <!-- The Django Loop Ends Here -->
