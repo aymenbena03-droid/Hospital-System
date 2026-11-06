@@ -190,7 +190,7 @@ def doctor_chart_data(request):
     # 1. Get all appointments for this doctor
     appointments = Appointment.objects.filter(doctor=doctor).order_by('date')
     
-    # 2. Group them in Python (Avoids SQLite date errors)
+    # 2. Group the appointments 
     chart_data = {}
     for appt in appointments:
         if appt.date:
