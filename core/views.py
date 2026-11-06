@@ -6,6 +6,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import PatientRegistrationForm, LoginForm, DoctorProfileForm
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -178,3 +179,26 @@ def doctor_profile(request):
         form = DoctorProfileForm(instance=doctor)
         
     return render(request, 'core/doctor_profile.html', {'form': form, 'doctor': doctor})
+
+
+@login_required
+def doctor_chart_data(request):
+    doctor = Doctor.objects.filter(user=request.user).first()
+    if not doctor:
+        return JsonResponse({'error': 'Not a doctor'}, status=403)
+        
+    # 1. Get all appointments for this doctor
+    appointments = Appointment.objects.filter(doctor=doctor).order_by('date')
+    
+    # 2. Group them in Python (Avoids SQLite date errors)
+    chart_data = {}
+    for appt in appointments:
+        if appt.date:
+            date_str = appt.date.strftime('%b %d') # e.g., "Nov 07"
+            chart_data[date_str] = chart_data.get(date_str, 0) + 1
+            
+    # 3. Format for Chart.js
+    labels = list(chart_data.keys())
+    counts = list(chart_data.values())
+    
+    return JsonResponse({'labels': labels, 'data': counts})

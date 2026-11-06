@@ -14,6 +14,15 @@
         </div>
     </div>
 </div>
+<!-- Add this row for the Chart -->
+<div class="row mb-4">
+    <div class="col-md-8">
+        <div class="card shadow border-0 p-3">
+            <h5 class="fw-bold">Appointments Analytics</h5>
+            <canvas id="myChart" style="max-height: 250px;"></canvas>
+        </div>
+    </div>
+</div>
 
 <div class="card shadow border-0">
     <div class="card-body">
@@ -62,4 +71,37 @@
         {% endif %}
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Fetch the data from our Django view
+        fetch("{% url 'doctor_chart_data' %}")
+            .then(response => response.json())
+            .then(data => {
+                const ctx = document.getElementById('myChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar', // Bar chart
+                    data: {
+                        labels: data.labels, // Dates from Django
+                        datasets: [{
+                            label: 'Appointments per Day',
+                            data: data.data, // Counts from Django
+                            backgroundColor: '#0d6efd', // Bootstrap Blue
+                            borderRadius: 5
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: { stepSize: 1 } // Only show whole numbers
+                            }
+                        }
+                    }
+                });
+            });
+    });
+</script>
 {% endblock %}
